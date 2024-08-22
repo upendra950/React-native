@@ -5,14 +5,19 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
+
+
 import {
+  Alert,
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -29,90 +34,93 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [mail, onChangeMail] = useState('');
+  const[name,onChangeName] = useState('');
+  const[mailVerify,setMailVerify]=useState(false);
+  const[nameVerify,setNameVerify]=useState(false);
+  
+  const onChangeName1 =(name:any)=>{
+    const name1=name;
+    onChangeName(name);
+    const checkName=/^[a-zA-Z]/;
+    if( name.length <3){
+     setNameVerify(true);}
+     else if(checkName.test(name1) === false){
+      setNameVerify(true);
+     }
+    else
+       setNameVerify(false);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }
+
+const onChangeEmail = (text:any) => {
+  const mailId=text;
+  onChangeMail(mailId);
+  const emailId=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  if(emailId.test(mailId) === false){
+    setMailVerify(true);
+  }
+  else setMailVerify(false)
+
+
+}
+ 
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.container}>
+
+      <Text style={styles.title} >Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Enter your mail'
+        onChangeText={e=>onChangeEmail(e)}
+        value={mail}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            {mailVerify ?<Text style={styles.error}>enter valid mail</Text>:null }
+
+      <TextInput
+        style={styles.input}
+        placeholder='Enter your name'
+        onChangeText={e=>onChangeName1(e)}
+        value={name}
+      />
+      {nameVerify ?<Text style={styles.error}>enter valid name</Text>:null }
+      <Button 
+
+      title='Login'
+      onPress={()=>Alert.alert('data submityted sucessfully')}
+            />
+    </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+      flex:1,
+      alignItems:'center',
+      justifyContent:'center',
+      backgroundColor:'#fff',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  title:{
+     fontSize:30,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  input: {
+    height: 40,
+    width:250,
+    margin: 12,
+    borderWidth: 1,
+    borderRadius:10
   },
-  highlight: {
-    fontWeight: '700',
+  btn:{
+    borderRadius:10
   },
+  error:{
+    color:'red'
+
+  }
+
 });
 
 export default App;
