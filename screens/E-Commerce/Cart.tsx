@@ -9,6 +9,8 @@ export const Cart = () => {
   const cartRedux  = useSelector((state:any)=>state.cartdata.cartList||[])
   const [isCart, setIsCart] = useState(true)
   const [cartData,setCartData]=useState<any[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+
     // console.log('this is cart',cartRedux)
 
   
@@ -28,6 +30,12 @@ const deleteItem =(product:any)=>{
     }
     dispatch({ type: SET_CART_DATA,data:updatedCart });
 }
+
+const handleRefresh = () => {
+  setRefreshing(true);
+  setCartData(cartRedux)
+  setRefreshing(false);
+};
   return (
     <SafeAreaView style={styles.safeArea}>
       {isCart?<View style={styles.cart}><Text style={styles.cartText}>cart is empty, add some  items </Text>
@@ -67,10 +75,13 @@ const deleteItem =(product:any)=>{
       
               </SafeAreaView>
             )}
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
           />
         </View>
         
       }
+      
   </SafeAreaView>
   )
 }
