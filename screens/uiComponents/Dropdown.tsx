@@ -1,0 +1,102 @@
+import React, { useState } from 'react';
+  import { StyleSheet, Text, View } from 'react-native';
+  import { Dropdown } from 'react-native-element-dropdown';
+  import AntDesign from 'react-native-vector-icons/AntDesign';
+
+  const data = [
+    { label: 'Male', value: '1' },
+    { label: 'Female', value: '2' },
+  ];
+
+  const DropdownComponent = () => {
+    const [value, setValue] = useState('');
+    const [isFocus, setIsFocus] = useState(false);
+
+    const renderLabel = () => {
+      if (value || isFocus) {
+        return (
+          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+          </Text>
+        );
+      }
+      return null;
+    };
+
+    return (
+      <View >
+        {/* {renderLabel()} */}
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+        //   inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+        //   search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Your Gender' : ''}
+        //   searchPlaceholder="Search..."
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="Safety"
+              size={20}
+            />
+          )}
+        />
+      </View>
+    );
+  };
+
+  export default DropdownComponent;
+
+  const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#F7F9F2',
+      padding: 16,
+    },
+    dropdown: {
+      height: 50,
+      borderColor: 'black',
+      borderWidth: 1,
+      borderRadius: 15,
+      paddingHorizontal: 8,
+      backgroundColor: '#f9f9f9',
+        },
+    icon: {
+      marginRight: 5,
+    },
+    label: {
+      position: 'absolute',
+      backgroundColor: 'white',
+      left: 22,
+      top: 8,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+  });

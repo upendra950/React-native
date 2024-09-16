@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from 'react-native-button';
 import { Alert, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import IonIcon from "react-native-vector-icons/Ionicons"
 
 
 export const LoginScreen = ({navigation}:any) => {
@@ -12,7 +13,6 @@ export const LoginScreen = ({navigation}:any) => {
     const [nameVerify, setNameVerify] = useState(false);
      
 
-    const navigate =useNavigation();
   
     const onChangeName1 = (name:string) => {
       onChangeName(name);
@@ -36,18 +36,20 @@ export const LoginScreen = ({navigation}:any) => {
     };
 
     const navigateToHome = (name:any,mail:any) => {
-      if (name && mail) {
-          navigation.navigate('HomeScreen');
-      } else {
-          Alert.alert('Validation Error', 'Please enter the details before going to login');
-      }
+      // if (name && mail) {
+          // navigation.navigate('HomeScreen');
+          navigation.navigate('BottomTab')
+      // } else {
+      //     Alert.alert('Validation Error', 'Please enter the details before going to login');
+      // }
   }
   
   
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.card}>
-          <Icon name="account" size={40} color="#000" style={styles.icon} />
+
+          <IonIcon name="person-circle-outline" size={60} color="#333"  />
   
           <Text style={styles.title}>Login</Text>
           <TextInput
@@ -95,9 +97,6 @@ const styles = StyleSheet.create({
       elevation: 5,
       alignItems: 'center',
     },
-    icon: {
-      marginBottom: 10,
-    },
     title: {
       fontSize: 30,
       marginBottom: 20,
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
       padding:9,
       borderRadius:10,
       fontSize:20
-  
     }
   });
   

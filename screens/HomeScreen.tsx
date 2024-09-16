@@ -6,17 +6,16 @@ import { Profile } from './components/Profile';
 import Icon from 'react-native-vector-icons/FontAwesome5'; 
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMat from 'react-native-vector-icons/MaterialIcons'; 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from './components/Home';
 
 const Tab = createBottomTabNavigator();
-const stack = createNativeStackNavigator();
+
 
 
 export const HomeScreen = ({navigation}:any) => {
   return (
   
-    <Tab.Navigator screenOptions=
+    <Tab.Navigator  screenOptions=
     { {
       tabBarActiveTintColor:'#0163d2',
       tabBarInactiveTintColor:'black',
@@ -29,26 +28,24 @@ export const HomeScreen = ({navigation}:any) => {
     >
        <Tab.Screen name="Home" component={Home} options={{
       headerShown:false,
-      tabBarIcon:({focused})=><Icon1 name="home" size={28}/>
+      tabBarIcon:()=><Icon1 name="home" size={28}/>
       }}/>
        <Tab.Screen name="List" component={List} options={{
       headerShown:false,
-      tabBarIcon:({focused})=><Icon name='list' size= {22} />
+      tabBarIcon:()=><Icon name='list' size= {22} />
     }} />
       
     <Tab.Screen name="Profile" component={Profile} options={{
       headerShown:false,
-      tabBarIcon:({focused})=><Icon1 name='account' size= {28}/>
+      tabBarIcon:()=><Icon1 name='account' size= {28}/>
       }} />
    
     <Tab.Screen name="Settings" component={Settings} options={{
       headerShown:false,
-      tabBarIcon:({focused})=><IconMat name='settings' size= {24}/>
+      tabBarIcon:()=><IconMat name='settings' size= {24}/>
       }} />
    
     </Tab.Navigator>
- 
-    
-  
+
   )
 }
