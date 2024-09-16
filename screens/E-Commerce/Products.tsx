@@ -4,6 +4,7 @@ import Loader from '../uiComponents/Loader';
 import SearchBar from '../uiComponents/SearchBar';
 import { useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import jsonData from "../Data.json"
 
 
 export const Products = ({navigation}:any) => {
@@ -26,7 +27,7 @@ export const Products = ({navigation}:any) => {
       const response = await fetch(url);
       const data = await response.json();
       console.log('__api_call');
-      const updatedData = data.map((element: any) => {
+      const updatedData = jsonData.map((element: any) => {
         if (element.id <= 25) {
           return { ...element, status: 'Approved' };
         } else if (element.id > 25 && element.id < 60) {
@@ -118,6 +119,7 @@ export const Products = ({navigation}:any) => {
              
               <SafeAreaView>
                 <Pressable onPress={()=>{navigation.navigate('ListComponent',{cartData:{
+                        id:item.id,
                         title:item.title,
                         description:item.description,
                         price:item.price,
@@ -193,6 +195,7 @@ const styles = StyleSheet.create({
     width:'40%',
     borderTopLeftRadius:10,
     borderBottomLeftRadius:10,
+    resizeMode:'stretch'
    
   },
   data:{

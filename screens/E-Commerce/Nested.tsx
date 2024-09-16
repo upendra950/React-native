@@ -8,7 +8,9 @@ export const Nested = () => {
   return (
     <Stack.Navigator initialRouteName='Products'>
         <Stack.Screen name ="Products" component={Products} options={{headerShown:false}}/>
-        <Stack.Screen name ="ListComponent" component={ListComponent}/>
+        <Stack.Screen name ="ListComponent" component={ListComponent} options={{
+          title:''
+        }}/>
     </Stack.Navigator>
   )
 }

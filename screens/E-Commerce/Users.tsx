@@ -16,24 +16,25 @@ export const Users = ({ navigation }: any) => {
   });
   const [date, setDate] = useState(formattedDate);
   const [showPicker, setShowPicker] = useState(false);
-  const [open, setOpen] =useState(false);
-  useEffect(()=>{
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
   })
   const dateOfBirth = () => {
     setShowPicker(!showPicker)
     console.log('CLICKED')
     setOpen(!open)
-    
+
   }
-  const handleChange =(propDate:any)=>{
-       setDate(propDate)
-       setOpen(!open)
-       setShowPicker(!showPicker)
+  const handleChange = (propDate: any) => {
+    setDate(propDate)
+    setOpen(!open)
+    setShowPicker(!showPicker)
   }
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground source={require('../Vision.jpg')} resizeMode='stretch' style={styles.img}>
-        <View style={styles.viewContainer}><View style={styles.card}>
+        <View style={styles.viewContainer}>
+          <View style={styles.card}>
           <View style={styles.inputbtn}>
             <Text style={styles.textName}>First name & Last name</Text>
             <TextInput
@@ -44,7 +45,7 @@ export const Users = ({ navigation }: any) => {
             <View>
               <Text style={styles.textName}>Gender</Text>
 
-              <View style={styles.radio}><RadioComponent/></View>
+              <View style={styles.radio}><RadioComponent /></View>
 
             </View>
             <View>
@@ -55,7 +56,7 @@ export const Users = ({ navigation }: any) => {
               <Text style={styles.textName}>
                 Date of Birth
               </Text>
-              <Calendar/>
+              <Calendar />
             </View>
           </View>
 
@@ -73,18 +74,20 @@ export const Users = ({ navigation }: any) => {
               <TextInput style={styles.input1} ></TextInput>
             </View>
           </View>
-         <CheckBoxComponent ></CheckBoxComponent> 
+          <CheckBoxComponent ></CheckBoxComponent>
           <View >
-             
+
             <Button
               style={styles.button}
               onPress={() => Alert.alert('Profile created')}
             >Create Profile
             </Button>
           </View>
-        </View></View>
+          
+        </View>
+        </View>
       </ImageBackground>
-       
+
     </SafeAreaView>
 
   )
@@ -97,16 +100,16 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
   },
-  radio:{
-   display:'flex',
-   justifyContent:'center',
-   paddingLeft:10
+  radio: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: 10
   },
-  calendar:{
-    width:'70%',
-    height:'20%',
-    flex:0.1,
-    position:'absolute',
+  calendar: {
+    width: '70%',
+    height: '20%',
+    flex: 0.1,
+    position: 'absolute',
   },
   viewContainer: {
     display: 'flex',
@@ -133,8 +136,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingLeft: 20,
     backgroundColor: '#f9f9f9',
-    fontSize:18,
-    paddingTop:10
+    fontSize: 18,
+    paddingTop: 10
 
   },
   input1: {
@@ -169,6 +172,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     // elevation: 5,
+    marginVertical:20
 
 
   },
@@ -213,7 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent'
   },
-  conts:{
-    backgroundColor:'gray'
+  conts: {
+    backgroundColor: 'gray'
   }
 })
