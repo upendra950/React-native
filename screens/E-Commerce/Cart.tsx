@@ -3,6 +3,9 @@ import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View
 import { useDispatch, useSelector } from 'react-redux'
 import IonIcon from 'react-native-vector-icons/Ionicons'
 import { SET_CART_DATA } from '../../redux/CounterAction'
+import Toast from 'react-native-simple-toast';
+
+
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -10,15 +13,20 @@ export const Cart = () => {
   const [isCart, setIsCart] = useState(true)
   const [cartData,setCartData]=useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [lowQty,setLowQty] = useState();
+
 
     // console.log('this is cart',cartRedux)
 
   
 useEffect(()=>{
-   setCartData(cartRedux);
-   if(cartRedux.length>0){
-    setIsCart(false)
+  //  setCartData(cartRedux);
+   if(cartRedux.length<1){
+    setIsCart(true)
     
+   }
+   else{
+    setIsCart(false)
    }
 
 })
@@ -36,13 +44,43 @@ const handleRefresh = () => {
   setCartData(cartRedux)
   setRefreshing(false);
 };
+const increaseQty =(product:any)=>{
+  const updatedCart=cartRedux.map((item:{id:any,quantity:any})=>{
+    if(item.id==product.id){
+    if(item.quantity>=1){
+      return {...item,quantity:item.quantity+1};
+    }
+    return item;
+  }
+  else{
+    return item;
+  }
+}
+)
+  dispatch({type:SET_CART_DATA,data:updatedCart})
+}
+const decreaseQty =(product:any)=>{
+  const updatedCart=cartRedux.map((item:{id:any,quantity:any})=>{
+    if(item.id == product.id){
+    if(item.quantity>1){
+      return {...item,quantity:item.quantity-1};
+    }
+    return item;
+  }
+  else{
+    return item
+  }
+  }
+  )
+  dispatch({type:SET_CART_DATA,data:updatedCart})
+}
   return (
     <SafeAreaView style={styles.safeArea}>
       {isCart?<View style={styles.cart}><Text style={styles.cartText}>cart is empty, add some  items </Text>
       <IonIcon name='happy-outline' style={styles.icon}/></View>:
       <View style={styles.listContainer}>
           <FlatList
-            data={cartData}
+            data={cartRedux}
             renderItem={({ item }) => (
              
               <SafeAreaView>
@@ -63,7 +101,14 @@ const handleRefresh = () => {
                         Price: $ {item?.price}
                         
                     </Text>
-                    <Text style={styles.value}>Quantity: {item?.quantity}</Text></View>
+                    {/* <Text style={styles.value}>Quantity: {item?.quantity}</Text> */}
+                    <View style={styles.qty}>
+                      <Text style={styles.value}>Qty:</Text>
+                      <TouchableOpacity style={styles.qtyBtn} onPress={()=>decreaseQty(item)}><Text style={{paddingLeft:6}}>--</Text></TouchableOpacity>
+                      <Text>{item?.quantity}</Text>
+                      <TouchableOpacity style={styles.qtyBtn} onPress={()=>increaseQty(item)}><Text style={{paddingLeft:5}}>+</Text></TouchableOpacity>
+                    </View>
+                    </View>
                     <View style={styles.inp}><Text style={styles.value} >UpdationOn: {item?.update}</Text></View>
                     <View style={styles.inp}>
                       <TouchableOpacity onPress={()=>deleteItem(item)}>
@@ -79,6 +124,7 @@ const handleRefresh = () => {
             onRefresh={handleRefresh}
           />
         </View>
+        
         
       }
       
@@ -168,5 +214,18 @@ const styles= StyleSheet.create({
     fontWeight:'800',
     textAlign:'center'
     
+  },
+  qty:{
+    display:'flex',
+    flexDirection:'row',
+    marginTop:5
+  },
+  qtyBtn:{
+    borderRadius:0.8,
+    borderColor:'black',
+    borderWidth:0.7,
+    marginHorizontal:10,
+    backgroundColor:'#F5F5F5',
+    width:20,
   }
 })

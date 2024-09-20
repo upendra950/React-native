@@ -1,19 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Image, TouchableOpacity } from 'react-native'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { put } from 'redux-saga/effects'
 import { SET_CART_DATA } from '../../redux/CounterAction'
+// import Toast from 'react-native-toast-message'
+import { ToastAndroid } from 'react-native'
+import Toast from 'react-native-simple-toast';
+
 
 export const ListComponent = ({ route }: any) => {
   const [isAdd, setIsAdd] = useState(true);
+  const [isCLicked,setIsClicked] = useState(false);
   const dispatch = useDispatch();
   const selector = useSelector((state: any) => state.cartdata.cartList||[])
+ 
+  useEffect(()=>{
+    const data = route.params?.cartData
+    const dataId = data.id
+    const item =selector.find((item: any) => item.id === dataId)
+    // if(isAdd){
+    //   if(item){
+    //   setIsAdd(true);}
+    //   else{
+    //    setIsAdd(false)
+    //   }
+    // }
+    // else{
+    //   setIsAdd(true)
+    // }
 
+  })
 
   const addToCart = () => {
     const data = route.params?.cartData
     const dataId = data.id
+    setIsClicked(true)
+    setIsAdd(false)
     console.log('this is selector checking ------',selector)
       const Item = selector.find((item: any) => item.id === dataId)
       console.log('this is selctor lenght------')
@@ -28,11 +51,8 @@ export const ListComponent = ({ route }: any) => {
             });
             console.log("this is updated cart data ------",updatedCart)
             dispatch({ type: SET_CART_DATA,data:updatedCart });
-
-
-        
-        // console.log('this is updated price data---', index)
-        Alert.alert("Increased quantity of the product in the cart");
+        // Alert.alert("Increased quantity of the product in the cart");
+        Toast.show('Increased the quantity of the product in the cart',Toast.CENTER)
 
 
       }
@@ -40,18 +60,20 @@ export const ListComponent = ({ route }: any) => {
         const newItem = {...data,quantity:1}
         const updatedItems = [...selector,newItem]
         dispatch({ type: SET_CART_DATA, data:updatedItems });
-        Alert.alert("Product added ")
+        // Alert.alert("Product added to the cart ")
+      //  ToastAndroid.show("product added successfully",ToastAndroid.TOP)
+      Toast.show('product added successfully',Toast.CENTER)
+      
+
 
       }
     }
   const removeFromCart = () => {
     const data = route.params?.cartData
-    console.log('this is removed data', selector)
-    const dataId = data.id
-    let index = selector.findIndex((item: any) => item.id == dataId.id)
-    selector.pop(index);
-    dispatch({ type: SET_CART_DATA, selector });
-    Alert.alert('item removed');
+    const updatedCart = selector.filter((item:any)=>item.id !== data.id)
+    dispatch({ type: SET_CART_DATA,data:updatedCart });
+    // Alert.alert('product deleted succesfully ')
+    Toast.show('product deleted from cart',Toast.CENTER)
     setIsAdd(true)
   }
 
@@ -73,7 +95,7 @@ export const ListComponent = ({ route }: any) => {
             {route.params?.cartData.description}
           </Text>
           <TouchableOpacity >
-            {isAdd ? <Text style={styles.button} onPress={addToCart}>Add to Cart</Text> : <Text style={styles.button} onPress={removeFromCart}>Remove From Cart</Text>}
+            {isAdd ? <Text style={styles.button} onPress={addToCart}>Add to Cart</Text> : <Text style={styles.button2} onPress={removeFromCart}>Remove From Cart</Text>}
           </TouchableOpacity>
 
         </View>
@@ -135,5 +157,16 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '800'
 
+  },
+  button2: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 10,
+    backgroundColor: '#FC4100',
+    padding: 10,
+    color: 'black',
+    fontWeight: '800'
+
   }
+
 })
